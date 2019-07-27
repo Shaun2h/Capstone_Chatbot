@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Integrated Manual TestPage</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="static/Template3/css/bootstrap.css">
+    <link rel="stylesheet" href="static/Template3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/Template3/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="static/Template3/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="static/Template3/style.css">
+    <link rel="stylesheet" href="static/Template3/responsive.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <section class="header-bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-5 col-sm-12 col-xs-12">
+                                <div class="main-logo">
+                                    <img src="static/Template1/img/infineonlogo.png" style="height:100%; width:20%;" alt="">
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </header>
+        <section class="carosal-area" style="background-image: url('{% static 'Template3/techbg.png' %}');">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="client owl-carousel owl-theme">
+                            <div class="item">
+                                <iframe src={{target}} frameborder="1"  scrolling = "no" style="border:none; width:100%; height:500px;"></iframe>
+                            </div>
+                            <div class="item">
+                                <div class="text">
+                                    <h3>Some Video will likely be placed here.</h3>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim <br> ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="our_activity">
+            <h2>PACKAGE DETAILS</h2>
+            <p style="text-align:center;">
+
+                City: {{city}}<br>
+                Region: {{region}}<br>
+                Company: {{company}}<br>
+                Product number: {{product}}<br>
+                MORE SPECIFIC INSTRUCTIONS HERE.
+            </p>
+        </section>
+
+    </div>
+    <script src="static/Template3/js/jquery-3.1.1.min.js"></script>
+    <script src="static/Template3/js/animationCounter.js"></script>
+    <script src="static/Template3/js/bootstrap.min.js"></script>
+    <script src="static/Template3/js/owl.carousel.min.js"></script>
+    <script src="static/Template3/js/active.js"></script>
+
+    <script type="static/Template3/text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-36251023-1']);
+        _gaq.push(['_setDomainName', 'jqueryscript.net']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+</body>
+
+</html>

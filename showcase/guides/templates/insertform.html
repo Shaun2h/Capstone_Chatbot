@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" style = "height:100%; width:100%">
+<head>
+    <meta charset="UTF-8">
+    <title>Test one</title>
+</head>
+<body style = "height:100%; width:100%">
+{{notice}}
+<div style="height:50%; width:50%;">
+    <form  method="POST" class="post-form">
+    {% csrf_token %}
+    {{error_msg}}
+        <table border="1">
+        {% for field in form.visible_fields %}
+          <tr>
+            <th>{{ field.label_tag }}</th>
+            <td>
+              {{ field.errors }}
+              {{ field }}
+              {{ field.help_text }}
+            </td>
+          </tr>
+        {% endfor %}
+  </table>
+    <button type="submit">Save</button>
+    </form>
+</div>
+</body>
+</html>
