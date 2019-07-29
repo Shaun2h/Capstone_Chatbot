@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" style = "height:100%; width:100%">
+<head>
+    {% load static %}
+    <script src="{% static 'babylon.js' %}"></script>
+    <script src="{% static 'babylonjs.loaders.min.js'%}"></script>
+</head>
+
+<body  style = "height:100%; width:100%">
+<!--{% extends 'blog/base.html' %/}-->
+<div  style = "height:100%; width:100%; min-height: 100%;min-width: 100%;"  >
+    <canvas id="renderCanvas" style ="min-height: 100%; min-width:100%" ></canvas>
+</div>
+<script>
+    console.log("/static/{{company}}/{{region}}/{{city}}/{{product}}/{{target}}.obj")
+    var canvas = document.getElementById("renderCanvas"); // Get the canvas element
+    var engine = new BABYLON.Engine(canvas, true);
+    engine.fovMode=engine.FOVMODE_VERTICAL_FIXED;
+
+    //engine.fovMode=engine.FOVMODE_HORIZONTAL_FIXED﻿;
+    var scene = new BABYLON.Scene(engine);
+    scene.clearColor = BABYLON.Color3.Gray();
+    var createScene =function(){
+    var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, new BABYLON.Vector3(0,-10,0), scene);
+    camera.setPosition(new BABYLON.Vector3(0, 0, 60));
+    var light1 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(1, -1, 1), scene);
+    var light2 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(-1, -1, -1), scene);
+    var light3 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(1, 1, 1), scene);
+    var light4 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(-1, 1, -1), scene);
+    var light5 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(-1, -1, 1), scene);
+    var light6 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(1, -1, -1), scene);
+    var light7 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(-1, 1, 1), scene);
+    var light8 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(1, 1, -1), scene);
+    var light9 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(1, 0, 0), scene);
+    var light10 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(0, 1, 0), scene);
+    var light11 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(0, 0, 1), scene);
+    var light12 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(-1, 0, 0), scene);
+    var light13 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(0, -1, 0), scene);
+    var light14 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(0, 0, -1), scene);
+    var light15 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(0, 0, 0), scene);
+
+    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
+    // Default intensity is 1. Let's dim the light a small amount
+    /*light1.intensity = 0.9;
+    light2.intensity = 0.9;
+    light3.intensity = 0.9;
+    light4.intensity = 0.9;
+    light5.intensity = 0.9;
+    light6.intensity = 0.9;
+    light7.intensity = 0.9;
+    light8.intensity = 0.9;
+
+    light9.intensity = 0.9;
+    light10.intensity = 0.9;
+    light11.intensity = 0.9;
+    light12.intensity = 0.9;
+    light13.intensity = 0.9;
+    light14.intensity = 0.9;
+    light15.intensity = 0.9;
+    */
+    camera.attachControl(canvas, true);
+    BABYLON.SceneLoader.Append("/static/{{company}}/{{region}}/{{city}}/{{product}}/",
+     "{{target}}.gltf", scene);
+    //var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+    //var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, scene);
+    //sphere.position.y = 0;
+    return scene;
+    }
+    var scene = createScene();
+    engine.runRenderLoop(function () {
+                scene.render();
+    });
+
+    // Watch for browser/canvas resize events
+    window.addEventListener("resize", function () {
+            engine.resize();
+    });
+</script>
+</body>
+</html>

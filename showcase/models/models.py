@@ -13,10 +13,13 @@ class BaseClass(models.Model):
                                                       ('ASIA', 'ASIA'),
                                                       ('CHINA', 'CHINA')))
     city_ID = models.IntegerField()
-    target = models.CharField(max_length=300, default="")
+    target = models.CharField(max_length=300, default="") # this saves the file name.
     pizzabox = None  # is this a pizzabox instance?
     per_box = 0  # how many to a box?
     allowed = ["Amazon", "Asus", "Intel"]
+    sealed = False
+    # The url is constructed based off the fields above.
+
     @staticmethod
     def get_company():
         return "NULL"

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<head>
+    {% load static %}
+    <script src="{% static 'xeogl.js' %}"></script>
+    <script src="{% static 'OBJModel.js'%}"></script>
+</head>
+
+<body>
+<!--{% extends 'blog/base.html' %/}-->
+<script>
+    console.log("/static/{{company}}/{{region}}/{{city}}/{{product}}/{{target}}.obj")
+    var maleModel = new xeogl.OBJModel({
+        id: "maleModel",
+        src: "/static/{{company}}/{{region}}/{{city}}/{{product}}/{{target}}.obj",
+        //possibly... a url?
+        //position: [-50, 0, -60]     // Move the male model to one side
+    });
+    maleModel.on("loaded", function () {
+            var cameraFlight = new xeogl.CameraFlightAnimation();
+            cameraFlight.flyTo(maleModel.scene);
+    });
+    new xeogl.AmbientLight({
+       color: [1,1, 1],
+       intensity: 0.3
+   }),
+    // Enable camera interaction
+    new xeogl.CameraControl();
+</script>
+</body>
