@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from .RequestForms import PicklistIdForm, RequestPicklistID
 from django.http import HttpResponse, HttpResponseNotFound
-from picklistdb.models import Picklist
 from .models import Picklist
 from django.core.exceptions import ObjectDoesNotExist
+from threading import Thread
+import os
 # Create your views here.
-
+from picklistdb.print import print_barcodes
 CDN_URL = "http://127.0.0.1:8000/picklists/"
 
 
@@ -22,31 +23,32 @@ def request_pick(request):
             error = "ERROR"
 
     # returns a simple form allowing manual entry, or scanned entry.
-    context = {"form": RequestPicklistID, "error_msg": error, "typing": "Picklist Request"}
+    context = {"form": RequestPicklistID, "error_msg": error, "typing": "Request Picklist"}
     return HttpResponse(render(request, "request.html", context=context))
 
 
 def pick_response(request, picklistid):
     try:
         main_classes = Picklist.objects.filter(own_id=picklistid)
-        requested_instance = main_classes.count()
+        count = main_classes.count()
         if not main_classes:
             raise ObjectDoesNotExist("Item does not exist")
-        if not requested_instance:
+        if not count:
             raise ObjectDoesNotExist("Item does not exist")
-        if requested_instance > 1:
+        if count > 1:
             raise ObjectDoesNotExist("Multiple of same entry. Check Database")
-        return return_guide(request, requested_instance)
+        error = ""
+        context = {"form": RequestPicklistID, "error_msg": error, "typing": "Request Picklist "}
+        printing_list = main_classes[0].req_list()
+        thread = Thread(target=print_barcodes, kwargs=dict(list_of_ids=printing_list,
+                                                           new_cwd=os.getcwd()))
+        # print the output.
+        thread.start()
+
+        return HttpResponse(render(request, "request.html", context=context))
 
     except (KeyError, ObjectDoesNotExist) as ex:
         return HttpResponse(str(ex))
-
-
-def return_guide(request, item):
-    # do something here to the picklist... do i print it or something??
-    return HttpResponse("done!")
-
-
 
 
 def insert_req(request):
@@ -75,16 +77,21 @@ def insert_succ(data):
         product_ID5 = data["product_ID5"]
         product_ID6 = data["product_ID6"]
         product_ID7 = data["product_ID7"]
+        product_ID8 = data["product_ID8"]
+        product_ID9 = data["product_ID9"]
+        product_ID10 = data["product_ID10"]
 
         attempt = Picklist(own_id=input_id, product_ID1=product_ID1, product_ID2=product_ID2,
                            product_ID3=product_ID3, product_ID4=product_ID4, product_ID5=product_ID5
-                           , product_ID6=product_ID6, product_ID7=product_ID7
+                           , product_ID6=product_ID6, product_ID7=product_ID7,
+                           product_ID8=product_ID8, product_ID9=product_ID9,
+                           product_ID10=product_ID10
                            )
         # generate the base class.
 
         attempt.save()  # save.
 
-        return HttpResponse("Successfully added Picklist:"+ input_id)
+        return HttpResponse("Successfully added Picklist:" + input_id)
     except KeyError as ex:
         print(ex)
         return HttpResponse("Failure!<br>" + str(ex))
@@ -120,7 +127,7 @@ def del_succ(data):
             attempt.delete()  # save.
             return HttpResponse("Successfully removed Picklist:" + input_id)
 
-    except (KeyError, models.models.ObjectDoesNotExist) as ex:
+    except (KeyError, ObjectDoesNotExist) as ex:
         print(ex)
         return HttpResponse("Failure!<br>" + str(ex))
 

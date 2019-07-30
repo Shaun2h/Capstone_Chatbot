@@ -6,7 +6,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class BaseClass(models.Model):
     # City ID records which city is it.. based off the choice above.
-
+    company = models.CharField(max_length=50, choices=(("Amazon", "Amazon"),
+                                                       ("Intel", "Intel"),
+                                                       ("Asus", "Asus")), default="")
     product_ID = models.CharField(max_length=50, default="")
     region = models.CharField(max_length=50, choices=(('NA', 'NA'),
                                                       ('SEA', 'SEA'),
@@ -34,41 +36,4 @@ class BaseClass(models.Model):
 
 
 admin.site.register(BaseClass)
-
-
-class Amazon(models.Model):
-    company = models.CharField(max_length=50, default="Amazon")
-    information = models.OneToOneField(BaseClass, on_delete=models.CASCADE, primary_key=True)
-
-    @staticmethod
-    def get_company():
-        return "Amazon"
-
-
-admin.site.register(Amazon)
-
-
-class Intel(models.Model):
-    company = models.CharField(max_length=50, default="Intel")
-    information = models.OneToOneField(BaseClass, on_delete=models.CASCADE, primary_key=True)
-
-    @staticmethod
-    def get_company():
-        return "Intel"
-
-
-admin.site.register(Intel)
-
-
-class Asus(models.Model):
-    company = models.CharField(max_length=50, default="Asus")
-    information = models.OneToOneField(BaseClass, on_delete=models.CASCADE, primary_key=True)
-
-    @staticmethod
-    def get_company():
-        return "Asus"
-
-
-admin.site.register(Asus)
-
 

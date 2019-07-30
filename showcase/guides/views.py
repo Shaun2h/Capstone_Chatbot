@@ -1,23 +1,12 @@
-from django.shortcuts import render
-
 # Create your views here.
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound
 from .QuestionForm import QuestionForm, InsertForm, PrIdForm
-import inspect
-import models.models
+from models.models import BaseClass
+from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
-all_in_model = dir(models.models)  # get all in model.py
-model_classes = {}
-baseclass = None
 CDN_URL = "http://127.0.0.1:8000/models/"
 relevant_keys = ['Amazon', 'Asus', 'Intel']
-
-for i in all_in_model:
-    if inspect.isclass(getattr(models.models, i)) and i != "BaseClass":  # check if it is a class
-        model_classes[i] = getattr(models.models, i)
-    if i == "BaseClass":
-        baseclass = getattr(models.models, i)  # attempt to obtain the class type
 
 """
 def basic(request):
@@ -63,8 +52,7 @@ def prID(request):
 def pr_filter(request, product_ID):
     try:
         # target_class = model_classes[company]
-        requested_instance = None
-        requested_instance = baseclass.objects.filter(product_ID=product_ID)
+        requested_instance = BaseClass.objects.filter(product_ID=product_ID)
 
         # for c in main_classes:
         #     temp = target_class.objects.filter(information=c)
@@ -73,20 +61,21 @@ def pr_filter(request, product_ID):
         #         break
 
         if not requested_instance:  # i.e it's still none..
-            raise models.models.models.ObjectDoesNotExist("Item does not exist")
+            raise ObjectDoesNotExist("Item does not exist")
         # if not requested_instance:
         #     raise models.models.models.ObjectDoesNotExist("Item does not exist")
         if len(requested_instance) > 1:
-            raise models.models.models.ObjectDoesNotExist("Multiple of same entry. Check Database")
+            raise ObjectDoesNotExist("Multiple of same entry. Check Database")
+
         return return_guide(request, requested_instance[0])
 
-    except (KeyError, models.models.models.ObjectDoesNotExist) as ex:
+    except (KeyError, ObjectDoesNotExist) as ex:
         return HttpResponse(str(ex))
 
 
 def return_guide(request, item):
     requested_instance = item  # it's essentially a list object here.
-    context = {"company": requested_instance.get_company(),
+    context = {"company": requested_instance.company,
                "region": requested_instance.region,
                "city": requested_instance.city_ID,
                "product": requested_instance.product_ID,
@@ -98,13 +87,15 @@ def return_guide(request, item):
     list_of_views = []
     if context["sealed"]:
         # version with sealed.
-        view_url = CDN_URL + context["company"] + "/" + context["region"] + "/" + str(context["city"])\
+        view_url = CDN_URL + context["company"] + "/" + context["region"] + "/" \
+                   + str(context["city"])\
                    + "/" + context["product"] + "/" + str(context["pizzabox"]) + "/" + \
                    str(context["per_box"]) + "/"
         list_of_views.append(view_url + "1")
 
     else:
-        view_url = CDN_URL + context["company"] + "/" + context["region"] + "/" + str(context["city"])\
+        view_url = CDN_URL + context["company"] + "/" + context["region"] + "/" \
+                   + str(context["city"])\
                    + "/" + context["product"] + "/" + str(context["pizzabox"]) + "/" + \
                    str(context["per_box"]) + "/"
         list_of_views.append(view_url + "0")
@@ -130,31 +121,22 @@ def guide_response(request):  # main method to handle the incoming request. If c
 
 def asked(request, company, region, city, product):
     try:
-        target_class = model_classes[company]
-        main_classes = baseclass.objects.filter(region=region, city_ID=city, product_ID=product)
-        requested_instance = None
-        for c in main_classes:
-            temp = target_class.objects.filter(information=c)
-            if temp:
-                requested_instance = temp
-                break
-        if not main_classes:
-            raise models.models.models.ObjectDoesNotExist("Item does not exist")
-        if not requested_instance:
-            raise models.models.models.ObjectDoesNotExist("Item does not exist")
+        requested_instance = BaseClass.objects.filter(company=company,
+                                                      region=region, city_ID=city,
+                                                      product_ID=product)
+
+        if len(requested_instance < 1):
+            raise ObjectDoesNotExist("Item does not exist")
         if len(requested_instance) > 1:
-            raise models.models.models.ObjectDoesNotExist("Multiple of same entry. Check Database")
+            raise ObjectDoesNotExist("Multiple of same entry. Check Database")
             # there should only be one of this item. If there are multiple raised from the filter,
             # check the database.
-
         requested_instance = requested_instance[0]  # it's essentially a list object here.
-
         # i need to do something to dynamically generate the list of the relevant models here..
         # i need to be able to produce the relevant descriptions here....
-
         return_guide(request, requested_instance)
 
-    except (KeyError, models.models.models.ObjectDoesNotExist) as ex:
+    except (KeyError, ObjectDoesNotExist) as ex:
         return HttpResponse(str(ex))
 
 
@@ -181,22 +163,16 @@ def insert_req(request):
 
 def insert_succ(company, region, city, product, url, ispizza, per_box, seal):
     try:
+        main_classes = BaseClass.objects.filter(region=region, city_ID=city, product_ID=product)
+        if len(main_classes) > 0:  # is a duplicate in the area?
+            raise KeyError("An existing product takes up this slot. Please Remove it first.")
 
-        target_class = model_classes[company]
-        main_classes = baseclass.objects.filter(region=region, city_ID=city, product_ID=product)
-        for main_class in main_classes:  # get the main classes that turned up.
-            if(target_class.objects.filter(information=main_class)) > 0:
-                # look through all companies.
-                raise KeyError("An existing product takes up this slot. Please Remove it first.")
-
-        attempt = baseclass(region=region, city_ID=city, product_ID=product,
+        attempt = BaseClass(company=company, region=region, city_ID=city, product_ID=product,
                             target=url, pizzabox=ispizza, per_box=per_box, sealed=seal)
         # generate the base class.
-
         attempt.save()  # save.
-        subhead = target_class(information=attempt)
-        subhead.save()
-        return HttpResponse("Successfully added..." + subhead.information.target)
+        return HttpResponse("Successfully added..." + attempt.company)
+
     except KeyError as ex:
         print(ex)
         return HttpResponse("Failure!<br>" + str(ex))
@@ -225,7 +201,7 @@ def del_succ(region, city, product, ispizza, perbox):
 
     try:
         # target_class = model_classes[company]  # in case. you need to reference the actual class.
-        attempt = baseclass.objects.filter(region=region, city_ID=city, product_ID=product,
+        attempt = BaseClass.objects.filter(region=region, city_ID=city, product_ID=product,
                                            pizzabox=ispizza, per_box=perbox)
         if not attempt.count():
             return HttpResponseNotFound("Entry does not exist:" + product)
@@ -233,7 +209,7 @@ def del_succ(region, city, product, ispizza, perbox):
             attempt.delete()  # save.
         return HttpResponse("Successfully REMOVED...")
 
-    except (KeyError, models.models.models.ObjectDoesNotExist) as ex:
+    except (KeyError, ObjectDoesNotExist) as ex:
         print(ex)
         return HttpResponse("Failure!<br>" + str(ex))
 
