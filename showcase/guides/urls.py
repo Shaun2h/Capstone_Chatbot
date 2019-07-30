@@ -1,7 +1,8 @@
 from django.urls import path
 from . import views
 urlpatterns = [
-    path("", views.basic, name="Default"),  # this path only accepts POST. Throws error otherwise
+    # path("", views.basic, name="Default"),
+    path("", views.prID, name="Default"),
     path("spec", views.prID),
     # path("guide_response", views.guide_response),
     # this is not used since basic can fulfil the same role.

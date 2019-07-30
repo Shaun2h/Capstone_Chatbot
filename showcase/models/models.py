@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib import admin
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
 
@@ -13,11 +14,13 @@ class BaseClass(models.Model):
                                                       ('ASIA', 'ASIA'),
                                                       ('CHINA', 'CHINA')))
     city_ID = models.IntegerField()
-    target = models.CharField(max_length=300, default="") # this saves the file name.
-    pizzabox = None  # is this a pizzabox instance?
-    per_box = 0  # how many to a box?
+    target = models.CharField(max_length=300, default="")  # this saves the file name.
+    pizzabox = models.BooleanField(default=False)  # is this a pizzabox instance?
+    per_box = models.IntegerField(default=1, validators=[MaxValueValidator(5),
+                                                         MinValueValidator(1)])
+    # how many to a box?
     allowed = ["Amazon", "Asus", "Intel"]
-    sealed = False
+    sealed = models.BooleanField(default=False)
     # The url is constructed based off the fields above.
 
     @staticmethod

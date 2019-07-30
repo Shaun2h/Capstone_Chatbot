@@ -1,8 +1,10 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator, MinValueValidator, URLValidator
+from django.core.validators import MaxValueValidator, MinValueValidator  # , URLValidator
 from django.apps import apps
-BaseClass = apps.get_model('models', 'BaseClass') # import the model from another app in Django
+
+
+BaseClass = apps.get_model('models', 'BaseClass')  # import the model from another app in Django
 
 
 class QuestionForm(forms.Form):
@@ -59,7 +61,7 @@ class InsertForm(forms.Form):
     city = forms.IntegerField(label="City", initial=1, validators=[MinValueValidator(1),
                                                                    MaxValueValidator(3)])
     product = forms.CharField(label="Product ID", min_length=1, max_length=200)
-    urlline = forms.CharField(label="Product URL", min_length=1, max_length=300)
+    urlline = forms.CharField(label="File Name", min_length=1, max_length=300)
     ispizza = forms.BooleanField(label="Is a Pizzabox: ", required=False)
 
     per_box = forms.IntegerField(label="How many per box? ", initial=1,

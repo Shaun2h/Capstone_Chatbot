@@ -9,12 +9,12 @@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">
-    <link rel="stylesheet" href="static/Template3/css/bootstrap.css">
-    <link rel="stylesheet" href="static/Template3/css/font-awesome.min.css">
-    <link rel="stylesheet" href="static/Template3/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="static/Template3/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="static/Template3/style.css">
-    <link rel="stylesheet" href="static/Template3/responsive.css">
+    <link rel="stylesheet" href="{% static 'guideview/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'guideview/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'guideview/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'guideview/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'guideview/style.css' %}">
+    <link rel="stylesheet" href="{% static 'guideview/responsive.css' %}">
 </head>
 
 <body>
@@ -25,19 +25,19 @@
                     <div class="row">
                         <div class="col-md-5 col-sm-12 col-xs-12">
                                 <div class="main-logo">
-                                    <img src="static/Template1/img/infineonlogo.png" style="height:100%; width:20%;" alt="">
+                                    <img src="{% static 'guideview/img/infineonlogo.png' %}" style="height:100%; width:20%;" alt="">
                                 </div>
                         </div>
                     </div>
                 </div>
             </section>
         </header>
-        <section class="carosal-area" style="background-image: url('{% static 'Template3/techbg.png' %}');">
+        <section class="carosal-area" style="background-image: url('{% static 'guideview/techbg.png' %}');">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="client owl-carousel owl-theme">
-                            {% for target in view_list %}
+                            {% for target in viewlist %}
                             <div class="item">
                                 <iframe src={{target}} frameborder="1"  scrolling = "no" style="border:none; width:100%; height:500px;"></iframe>
                             </div>
@@ -66,13 +66,13 @@
         </section>
 
     </div>
-    <script src="static/Template3/js/jquery-3.1.1.min.js"></script>
-    <script src="static/Template3/js/animationCounter.js"></script>
-    <script src="static/Template3/js/bootstrap.min.js"></script>
-    <script src="static/Template3/js/owl.carousel.min.js"></script>
-    <script src="static/Template3/js/active.js"></script>
+    <script src="{% static 'guideview/js/jquery-3.1.1.min.js' %}"></script>
+    <script src="{% static 'guideview/js/animationCounter.js' %}"></script>
+    <script src="{% static 'guideview/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'guideview/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'guideview/js/active.js' %}"></script>
 
-    <script type="static/Template3/text/javascript">
+    <script type="{% static 'guideview/text/javascript' %}">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-36251023-1']);
         _gaq.push(['_setDomainName', 'jqueryscript.net']);

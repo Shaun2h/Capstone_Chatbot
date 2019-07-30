@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from .QuestionForm import QuestionForm, InsertForm, PrIdForm
 import inspect
 import models.models
@@ -11,7 +11,7 @@ all_in_model = dir(models.models)  # get all in model.py
 model_classes = {}
 baseclass = None
 CDN_URL = "http://127.0.0.1:8000/models/"
-
+relevant_keys = ['Amazon', 'Asus', 'Intel']
 
 for i in all_in_model:
     if inspect.isclass(getattr(models.models, i)) and i != "BaseClass":  # check if it is a class
@@ -19,7 +19,7 @@ for i in all_in_model:
     if i == "BaseClass":
         baseclass = getattr(models.models, i)  # attempt to obtain the class type
 
-
+"""
 def basic(request):
     error = ""
     if request.method == "POST":
@@ -40,6 +40,7 @@ def basic(request):
     # out = HttpResponse(error)
     # out.status_code = 405
     # return out
+"""
 
 
 def prID(request):
@@ -49,7 +50,7 @@ def prID(request):
 
         if question.is_valid():
             data = question.cleaned_data
-            return pr_filter(request, data["product"], data["company"])
+            return pr_filter(request, data["product"])
             # exits here, returning a http response
         else:
             error = "ERROR"
@@ -59,25 +60,25 @@ def prID(request):
     return HttpResponse(render(request, "request.html", context=context))
 
 
-def pr_filter(request, product_ID, company):
+def pr_filter(request, product_ID):
     try:
-        target_class = model_classes[company]
-        main_classes = baseclass.objects.filter(product_ID=product_ID)
+        # target_class = model_classes[company]
         requested_instance = None
-        for c in main_classes:
-            temp = target_class.objects.filter(information=c)
-            if temp:
-                requested_instance = temp
-                break
+        requested_instance = baseclass.objects.filter(product_ID=product_ID)
 
-        if not main_classes:
+        # for c in main_classes:
+        #     temp = target_class.objects.filter(information=c)
+        #     if temp:
+        #         requested_instance = temp
+        #         break
+
+        if not requested_instance:  # i.e it's still none..
             raise models.models.models.ObjectDoesNotExist("Item does not exist")
-        if not requested_instance:
-            raise models.models.models.ObjectDoesNotExist("Item does not exist")
+        # if not requested_instance:
+        #     raise models.models.models.ObjectDoesNotExist("Item does not exist")
         if len(requested_instance) > 1:
             raise models.models.models.ObjectDoesNotExist("Multiple of same entry. Check Database")
-        item = requested_instance[0]
-        return return_guide(request, item)
+        return return_guide(request, requested_instance[0])
 
     except (KeyError, models.models.models.ObjectDoesNotExist) as ex:
         return HttpResponse(str(ex))
@@ -85,31 +86,28 @@ def pr_filter(request, product_ID, company):
 
 def return_guide(request, item):
     requested_instance = item  # it's essentially a list object here.
-    context = {"company": requested_instance.getEQ(),
-               "region": requested_instance.information.region,
-               "city": requested_instance.information.city_ID,
-               "product": requested_instance.information.product_ID,
-               "pizzabox": requested_instance.information.pizzabox,
-               "per_box": requested_instance.information.per_box,
-               "target": requested_instance.information.target,
-               "sealed": requested_instance.information.sealed
+    context = {"company": requested_instance.get_company(),
+               "region": requested_instance.region,
+               "city": requested_instance.city_ID,
+               "product": requested_instance.product_ID,
+               "pizzabox": requested_instance.pizzabox,
+               "per_box": requested_instance.per_box,
+               "target": requested_instance.target,
+               "sealed": requested_instance.sealed
                }
     list_of_views = []
     if context["sealed"]:
         # version with sealed.
-        view_url = CDN_URL + context["company"] + "/" + context["region"] + "/" + context["city"] + \
-                   "/" + context["product"] + "/" + context["pizzabox"] + "/" + \
-                   context["per_box"] + "/"
-        list_of_views.append(view_url + "sealed")
+        view_url = CDN_URL + context["company"] + "/" + context["region"] + "/" + str(context["city"])\
+                   + "/" + context["product"] + "/" + str(context["pizzabox"]) + "/" + \
+                   str(context["per_box"]) + "/"
+        list_of_views.append(view_url + "1")
 
     else:
-        view_url = CDN_URL + context["company"] + "/" + context["region"] + "/" + context[
-            "city"] + \
-                   "/" + context["product"] + "/" + context["pizzabox"] + "/" + \
-                   context["per_box"] + "/"
-        view_url += context["target"]
-        list_of_views.append(view_url + "unsealed")
-
+        view_url = CDN_URL + context["company"] + "/" + context["region"] + "/" + str(context["city"])\
+                   + "/" + context["product"] + "/" + str(context["pizzabox"]) + "/" + \
+                   str(context["per_box"]) + "/"
+        list_of_views.append(view_url + "0")
     context["viewlist"] = list_of_views
     print(list_of_views)
     return HttpResponse(render(request, "guideview.html", context=context))
@@ -192,7 +190,7 @@ def insert_succ(company, region, city, product, url, ispizza, per_box, seal):
                 raise KeyError("An existing product takes up this slot. Please Remove it first.")
 
         attempt = baseclass(region=region, city_ID=city, product_ID=product,
-                            target=url, ispizza=ispizza, per_box=per_box, sealed=seal)
+                            target=url, pizzabox=ispizza, per_box=per_box, sealed=seal)
         # generate the base class.
 
         attempt.save()  # save.
@@ -228,9 +226,11 @@ def del_succ(region, city, product, ispizza, perbox):
     try:
         # target_class = model_classes[company]  # in case. you need to reference the actual class.
         attempt = baseclass.objects.filter(region=region, city_ID=city, product_ID=product,
-                                           ispizza=ispizza, per_box=perbox)
-
-        attempt.delete()  # save.
+                                           pizzabox=ispizza, per_box=perbox)
+        if not attempt.count():
+            return HttpResponseNotFound("Entry does not exist:" + product)
+        else:
+            attempt.delete()  # save.
         return HttpResponse("Successfully REMOVED...")
 
     except (KeyError, models.models.models.ObjectDoesNotExist) as ex:

@@ -35,6 +35,7 @@ STATICFILES_DIRS = [
 INSTALLED_APPS = [
     'models.apps.ModelsConfig',
     'guides.apps.GuidesConfig',
+    'picklistdb.apps.PicklistdbConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
