@@ -1,2 +1,3 @@
 **/.idea/** # remove idea file completely from all prototypes
 node_modules/ # leaves this vulnerable to npm lacking the modules, but is done anyway.
+**/barcode tempy/**
