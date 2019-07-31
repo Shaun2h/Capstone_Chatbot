@@ -19,7 +19,8 @@ class Forceprint3(forms.Form):
 class Forceprint5(forms.Form):
     # this is only used in the demonstration, because we only have one thing to scan,
     # and no local database to reference each of the product ids to.
-    product_ID1 = forms.CharField(label="Product ID 1:", max_length=50, required=True)
+    product_ID1 = forms.CharField(label="Product ID 1:", max_length=50, required=True,
+                                  widget=forms.TextInput(attrs={'autofocus': ''}))
     product_ID2 = forms.CharField(label="Product ID 2:", max_length=50, required=True)
     product_ID3 = forms.CharField(label="Product ID 3:", max_length=50, required=True)
     product_ID4 = forms.CharField(label="Product ID 4:", max_length=50, required=True)

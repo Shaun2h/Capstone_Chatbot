@@ -3,7 +3,12 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound
 from .QuestionForm import QuestionForm, InsertForm, PrIdForm
 from models.models import BaseClass
+from picklistdb.RequestForms import Forceprint5
 from django.core.exceptions import ObjectDoesNotExist
+from picklistdb.print import print_barcodes
+from threading import Thread
+import os
+import random
 # Create your views here.
 CDN_URL = "http://127.0.0.1:8000/models/"
 relevant_keys = ['Amazon', 'Asus', 'Intel']
@@ -36,10 +41,26 @@ def prID(request):
     error = ""
     if request.method == "POST":
         question = PrIdForm(request.POST)
+        if "foo" in request.POST.keys() and Forceprint5(request.POST).is_valid():
+            # it is from the form within the same page.
+            relevant_list = []
+            for idx in range(1, 6):
+                relevant_list.append(request.POST["product_ID"+str(idx)][0])
 
-        if question.is_valid():
+            thread = Thread(target=print_barcodes, kwargs=dict(list_of_ids=relevant_list,
+                                                               new_cwd=os.getcwd()))
+            # print the output.
+            thread.start()
+            return pr_filter(request, request.POST["product"])
+            # begin by pushing out the same page.
+
+        elif question.is_valid():
             data = question.cleaned_data
-            return pr_filter(request, data["product"])
+            try:
+                data["foo"]
+            except KeyError:
+                return pr_filter(request, data["product"])
+
             # exits here, returning a http response
         else:
             error = "ERROR"
@@ -75,30 +96,32 @@ def pr_filter(request, product_ID):
 
 def return_guide(request, item):
     requested_instance = item  # it's essentially a list object here.
+    if random.random() < 0.5:
+        addy = "Requires Waterproofing"
+    else:
+        addy = "-"
     context = {"company": requested_instance.company,
                "region": requested_instance.region,
                "city": requested_instance.city_ID,
                "product": requested_instance.product_ID,
                "pizzabox": requested_instance.pizzabox,
                "per_box": requested_instance.per_box,
-               "target": requested_instance.target,
-               "sealed": requested_instance.sealed
+               "sealed": requested_instance.sealed,
+               "form": Forceprint5,
+               "additional": addy
                }
     list_of_views = []
-    if context["sealed"]:
-        # version with sealed.
-        view_url = CDN_URL + context["company"] + "/" + context["region"] + "/" \
-                   + str(context["city"])\
-                   + "/" + context["product"] + "/" + str(context["pizzabox"]) + "/" + \
-                   str(context["per_box"]) + "/"
-        list_of_views.append(view_url + "1")
 
-    else:
-        view_url = CDN_URL + context["company"] + "/" + context["region"] + "/" \
-                   + str(context["city"])\
-                   + "/" + context["product"] + "/" + str(context["pizzabox"]) + "/" + \
-                   str(context["per_box"]) + "/"
-        list_of_views.append(view_url + "0")
+    # version with sealed.
+    view_url = CDN_URL + context["company"] + "/" + context["region"] + "/" + str(context["city"]) \
+               + "/" + context["product"] + "/"
+
+    if context["sealed"] and context["pizzabox"]:
+        list_of_views.append(view_url + str(context["pizzabox"]) + "/"+"1")
+    elif context["pizzabox"]:
+        list_of_views.append(view_url + str(context["pizzabox"]) + "/" + "0")
+
+    list_of_views.append(view_url + str(context["per_box"]))
     context["viewlist"] = list_of_views
     print(list_of_views)
     return HttpResponse(render(request, "guideview.html", context=context))

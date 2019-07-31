@@ -15,7 +15,7 @@ class BaseClass(models.Model):
                                                       ('EUR', 'Europe'),
                                                       ('ASIA', 'ASIA'),
                                                       ('CHINA', 'CHINA')))
-    city_ID = models.IntegerField()
+    city_ID = models.CharField(max_length=100, default="")
     target = models.CharField(max_length=300, default="")  # this saves the file name.
     pizzabox = models.BooleanField(default=False)  # is this a pizzabox instance?
     per_box = models.IntegerField(default=1, validators=[MaxValueValidator(5),

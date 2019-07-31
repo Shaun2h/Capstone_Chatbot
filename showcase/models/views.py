@@ -19,17 +19,14 @@ def render_model(request, company, region, cityID, prID, modelname):
     return HttpResponse(render(request, "modelview.html", context=context))
 """
 
-
 @xframe_options_exempt
-def render_model(request, company, region, cityID, prID, ispizza, perbox, seal):
+def render_model1(request, company, region, cityID, prID, ispizza, seal):
+    # this method returns the pizzabox labelling model.
+    # either with or without a seal.
     # render with the babylon viewer.
-
     additional_path = ""  # Need to set some way to generate the model name..
-    if ispizza:
-        additional_path += "ispizza_"
-    additional_path += str(perbox)
-    sealed = bool(seal)
-    if sealed:
+    additional_path += "ispizza"
+    if seal:
         additional_path += "_sealed"
     else:
         additional_path += "_unsealed"
@@ -42,3 +39,14 @@ def render_model(request, company, region, cityID, prID, ispizza, perbox, seal):
     #     Http404("Example that is never triggered.")
     return HttpResponse(render(request, "babylonview.html", context=context))
 
+
+@xframe_options_exempt
+def render_model2(request, company, region, cityID, prID, perbox):
+    # This method returns the model which packs into the shipping box.
+    # render with the babylon viewer.
+    context = {"company": company, "region": region, "city": cityID, "product": prID,
+               "target": str(perbox)}
+    # context = {"target_file": unk, "question": Question.objects.all()[0]}
+    # if False:
+    #     Http404("Example that is never triggered.")
+    return HttpResponse(render(request, "babylonview.html", context=context))

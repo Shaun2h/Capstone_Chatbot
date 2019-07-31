@@ -20,11 +20,22 @@ body {
   background: yellow url("dhl_bg.png")  fixed right top;
 }
 
-.container {
-  max-width: 400px;
+.infocontainer {
+  max-width: 450px;
   width: 100%;
   margin: 0 auto;
   position: relative;
+}
+
+
+#information{
+  width: 100%;
+
+  border: 1px solid #ccc;
+  background: #FFF;
+  position: center;
+  margin: 0 0 5px;
+  padding: 25px;
 }
 
 #contact input[type="text"],

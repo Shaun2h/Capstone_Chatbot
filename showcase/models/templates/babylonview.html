@@ -18,11 +18,11 @@
     engine.fovMode=engine.FOVMODE_VERTICAL_FIXED;
     //engine.fovMode=engine.FOVMODE_HORIZONTAL_FIXED﻿;
     var scene = new BABYLON.Scene(engine);
-    scene.clearColor = BABYLON.Color3.Gray();
+    scene.clearColor = BABYLON.Color3.Black();
     var createScene =function(){
-    var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, new BABYLON.Vector3(0,-10,0), scene);
-    camera.setPosition(new BABYLON.Vector3(0, 0, 60));
-    camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius;
+    var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, new BABYLON.Vector3(0,0,0), scene);
+    camera.setPosition(new BABYLON.Vector3(0, 3, 10));
+    //camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius;
     var light1 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(1, -1, 1), scene);
     var light2 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(-1, -1, -1), scene);
     var light3 = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(1, 1, 1), scene);
@@ -59,8 +59,24 @@
     light15.intensity = 0.9;
     */
     camera.attachControl(canvas, true);
+    BABYLON.SceneLoader.ImportMesh("", "/static/{{company}}/{{region}}/{{city}}/{{product}}/"
+    , "{{target}}.gltf", scene, function (meshes, particleSystems, skeletons) {
+    // do something with the meshes and skeletons
+    // particleSystems are always null for glTF assets
+        for (var index = 0; index < skeletons.length; index++) {
+            scene.beginAnimation(skeletons[index], 0, 100, true, 1.0);
+        }
+        for (var index = 0; index < meshes.length; index++) {
+            scene.beginAnimation(meshes[index], 0, 100, true, 1.0);
+        }
+
+
+    });
+    /*
     BABYLON.SceneLoader.Append("/static/{{company}}/{{region}}/{{city}}/{{product}}/",
-     "{{target}}.gltf", scene);
+    "{{target}}.gltf", scene, function(scene){
+    });*/
+
     //var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
     //var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, scene);
     //sphere.position.y = 0;

@@ -58,10 +58,9 @@ class InsertForm(forms.Form):
                                                           ("CHINA", "CHINA")))
                              )
 
-    city = forms.IntegerField(label="City", initial=1, validators=[MinValueValidator(1),
-                                                                   MaxValueValidator(3)])
+    city = forms.CharField(label="City", min_length=1,max_length=10)
     product = forms.CharField(label="Product ID", min_length=1, max_length=200)
-    urlline = forms.CharField(label="File Name", min_length=1, max_length=300)
+    urlline = forms.CharField(label="File Name", min_length=1, max_length=300, required=False)
     ispizza = forms.BooleanField(label="Is a Pizzabox: ", required=False)
 
     per_box = forms.IntegerField(label="How many per box? ", initial=1,

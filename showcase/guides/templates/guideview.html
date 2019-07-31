@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Integrated Manual TestPage</title>
-
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'guideview/css/bootstrap.css' %}">
@@ -15,6 +14,8 @@
     <link rel="stylesheet" href="{% static 'guideview/css/owl.theme.default.min.css' %}">
     <link rel="stylesheet" href="{% static 'guideview/style.css' %}">
     <link rel="stylesheet" href="{% static 'guideview/responsive.css' %}">
+    <link rel="stylesheet" href="{% static '/request.css' %}" type="text/css" media="all">
+
 </head>
 
 <body>
@@ -54,18 +55,77 @@
             </div>
         </section>
         <section class="our_activity">
-            <h2>PACKAGE DETAILS</h2>
+            <div class = "infocontainer" style ="padding:50px; background: #FFF;" >
             <p style="text-align:center;">
+                <table border="1" id="information" style="text-align:center">
+                      <tr>
+                        <th colspan="2"><h2 style = "text-align:center">PACKAGE DETAILS</h2></th>
 
-                City: {{city}}<br>
-                Region: {{region}}<br>
-                Company: {{company}}<br>
-                Product number: {{product}}<br>
-                MORE SPECIFIC INSTRUCTIONS HERE.
-            </p>
+                      </tr>
+                <tr>
+                <th>City:</th>
+                <td>
+                    {{city}}
+                </td>
+
+                </tr>
+                <tr>
+                <th>Region:</th>
+                <td>
+                    {{region}}
+                </td>
+                 </tr>
+                <tr>
+                <th>Company:</th>
+                <td>
+                    {{company}}
+                </td>
+                </tr>
+                <tr>
+                <th>Product number:</th>
+                <td>
+                    {{product}}
+                </td>
+                </tr>
+                <tr>
+                <th>
+                    Additional Information:
+                </th>
+                <td>
+                    {{additional}}
+                </td>
+                </tr>
+                    </table>
+
+
+            </div>
+            <div class="infocontainer" >
+              <form id="contact" action="" method="POST">
+                  <h3>Product Scan</h3>
+                    {% csrf_token %}
+                    {{error_msg}}
+                    <table border="1">
+                    {% for field in form.visible_fields %}
+                      <tr>
+                        <th>{{ field.label_tag }}</th>
+                        <td>
+
+                          {{ field }}
+                          {{ field.help_text }}
+                          {{ field.errors }}
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    </table>
+                  <input type="hidden" name="product" value={{product}}>
+                  <input type="hidden" name="foo" value="bar" />
+                  <button type="submit">Request</button>
+              </form>
+            </div>
         </section>
 
     </div>
+
     <script src="{% static 'guideview/js/jquery-3.1.1.min.js' %}"></script>
     <script src="{% static 'guideview/js/animationCounter.js' %}"></script>
     <script src="{% static 'guideview/js/bootstrap.min.js' %}"></script>

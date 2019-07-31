@@ -72,7 +72,7 @@ def print_request_int(request, data):
 
     except (KeyError, ObjectDoesNotExist) as ex:
         pass
-        #return HttpResponse(str(ex))
+        # return HttpResponse(str(ex)) # fail to do anything.
 
 
 def request_pick(request):
@@ -147,11 +147,11 @@ def insert_succ(data):
         product_ID10 = data["product_ID10"]
 
         attempt = Picklist(own_id=input_id, product_ID1=product_ID1, product_ID2=product_ID2,
-                           product_ID3=product_ID3, product_ID4=product_ID4, product_ID5=product_ID5
-                           , product_ID6=product_ID6, product_ID7=product_ID7,
-                           product_ID8=product_ID8, product_ID9=product_ID9,
-                           product_ID10=product_ID10
-                           )
+                           product_ID3=product_ID3, product_ID4=product_ID4,
+                           product_ID5=product_ID5, product_ID6=product_ID6,
+                           product_ID7=product_ID7, product_ID8=product_ID8,
+                           product_ID9=product_ID9, product_ID10=product_ID10)
+
         # generate the base class.
 
         attempt.save()  # save.

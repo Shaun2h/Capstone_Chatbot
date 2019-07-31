@@ -3,7 +3,6 @@ from . import views
 urlpatterns = [
     # path("", views.basic, name="Default"),
     path("", views.prID, name="Default"),
-    path("spec", views.prID),
     # path("guide_response", views.guide_response),
     # this is not used since basic can fulfil the same role.
     # this path only accepts POST with correct contexts.
