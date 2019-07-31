@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .RequestForms import PicklistIdForm, RequestPicklistID
+from .RequestForms import PicklistIdForm, RequestPicklistID, Forceprint5, Forceprint3
 from django.http import HttpResponse, HttpResponseNotFound
 from .models import Picklist
 from django.core.exceptions import ObjectDoesNotExist
@@ -8,6 +8,71 @@ import os
 # Create your views here.
 from picklistdb.print import print_barcodes
 CDN_URL = "http://127.0.0.1:8000/picklists/"
+
+
+def request_print3(request):
+    error = ""
+    context = {"form": Forceprint3, "error_msg": error, "typing": "Request Picklist"}
+    if request.method == "POST":
+        question = Forceprint3(request.POST)
+
+        if question.is_valid():
+            data = question.cleaned_data
+            printing_list = []
+            for key in data.keys():
+                if len(data[key]) > 0:
+                    printing_list.append(data[key])
+                    printing_list.append(data[key])
+                    printing_list.append(data[key])
+            print_request_int(request, printing_list)  # obtain picklist id.
+            # exits here, returning a http response
+        else:
+            context["error"] = "ERROR"
+            context["form"] = Forceprint3(request.POST)
+            return HttpResponse(render(request, "request.html", context=context))
+
+    # returns a simple form allowing manual entry, or scanned entry.
+    return HttpResponse(render(request, "request.html", context=context))
+
+
+def request_print5(request):
+    error = ""
+    context = {"form": Forceprint5, "error_msg": error, "typing": "Request Picklist"}
+    if request.method == "POST":
+        question = Forceprint5(request.POST)
+
+        if question.is_valid():
+            data = question.cleaned_data
+            printing_list = []
+            for key in data.keys():
+                if len(data[key]) > 0:
+                    printing_list.append(data[key])
+                    printing_list.append(data[key])
+            print_request_int(request, printing_list)  # obtain picklist id.
+            # exits here, returning a http response
+        else:
+            context["error"] = "ERROR"
+            context["form"] = Forceprint5(request.POST)
+            return HttpResponse(render(request, "request.html", context=context))
+
+    # returns a simple form allowing manual entry, or scanned entry.
+    return HttpResponse(render(request, "request.html", context=context))
+
+
+def print_request_int(request, data):
+    error = ""
+    try:
+
+        thread = Thread(target=print_barcodes, kwargs=dict(list_of_ids=data,
+                                                           new_cwd=os.getcwd()))
+        # print the output.
+        thread.start()
+        context = {"form": Forceprint5, "error_msg": error, "typing": "Request a print"}
+        # return HttpResponse(render(request, "request.html", context=context))
+
+    except (KeyError, ObjectDoesNotExist) as ex:
+        pass
+        #return HttpResponse(str(ex))
 
 
 def request_pick(request):
