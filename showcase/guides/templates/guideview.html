@@ -18,7 +18,7 @@
 
 </head>
 
-<body>
+<body style="background-color:white;">
     <div class="wrapper">
         <header class="header">
             <section class="header-bottom">
@@ -34,98 +34,96 @@
             </section>
         </header>
         <section class="carosal-area" style="background-image: url('{% static 'guideview/techbg.png' %}');">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="client owl-carousel owl-theme">
-                            {% for target in viewlist %}
-                            <div class="item">
-                                <iframe src={{target}} frameborder="1"  scrolling = "no" style="border:none; width:100%; height:500px;"></iframe>
-                            </div>
-                            {% endfor %}
-                            <!--<div class="item">
-                                <div class="text">
-                                    <h3>Some Video will likely be placed here.</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim <br> ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo </p>
-                                </div>
-                            </div>-->
+            <div class="row">
+                <div class="col-xs-6">
+                     <div class="client owl-carousel owl-theme">
+                        {% for target in viewlist %}
+                        <div class="item">
+                            <iframe src={{target}} frameborder="1"  scrolling = "no" style="border:none; width:100%; height: 400px;"></iframe>
                         </div>
-                    </div>
+                        {% endfor %}
+                     </div>
                 </div>
-            </div>
+                <div class = "col-xs-6" style =" background: #FFF;">
+
+                <p style="text-align:center;">
+                    <table border="1" id="contact" style="text-align:center">
+                          <tr>
+                            <th colspan="2"><h2 style = "text-align:center">PACKAGE DETAILS</h2></th>
+                          </tr>
+                    <tr>
+                    <th>City:</th>
+                    <td>
+                        {{city}}
+                    </td>
+
+                    </tr>
+                    <tr>
+                    <th>Region:</th>
+                    <td>
+                        {{region}}
+                    </td>
+                     </tr>
+                    <tr>
+                    <th>Company:</th>
+                    <td>
+                        {{company}}
+                    </td>
+                    </tr>
+                    <tr>
+                    <th>Product number:</th>
+                    <td>
+                        {{product}}
+                    </td>
+                    </tr>
+                    <tr>
+                    <th>
+                        Additional Information:
+                    </th>
+                    <td style="background: Yellow;">
+                        {{additional}}
+                    </td>
+                    </tr>
+                        </table>
+
+
+
+                  <form id="contact" action="" method="POST">
+                      <h3>Product Scan</h3>
+                        {% csrf_token %}
+                        {{error_msg}}
+                        <table border="1">
+                        {% for field in form.visible_fields %}
+                          <tr>
+                            <th>{{ field.label_tag }}</th>
+                            <td>
+
+                              {{ field }}
+                              {{ field.help_text }}
+                              {{ field.errors }}
+                            </td>
+                          </tr>
+                        {% endfor %}
+                        </table>
+                      <input type="hidden" name="product" value={{product}}>
+                      <input type="hidden" name="foo" value="bar" />
+                      <button type="submit" style="cursor: pointer; width: 25%; border: none; background: #4CAF50; color: #FFF; margin: 0 0 5px; padding: 10px; font-size: 15px;">Request</button>
+                  </form>
+                </div>
+                </div>
         </section>
-        <section class="our_activity">
-            <div class = "infocontainer" style ="padding:50px; background: #FFF;" >
-            <p style="text-align:center;">
-                <table border="1" id="information" style="text-align:center">
-                      <tr>
-                        <th colspan="2"><h2 style = "text-align:center">PACKAGE DETAILS</h2></th>
 
-                      </tr>
-                <tr>
-                <th>City:</th>
-                <td>
-                    {{city}}
-                </td>
-
-                </tr>
-                <tr>
-                <th>Region:</th>
-                <td>
-                    {{region}}
-                </td>
-                 </tr>
-                <tr>
-                <th>Company:</th>
-                <td>
-                    {{company}}
-                </td>
-                </tr>
-                <tr>
-                <th>Product number:</th>
-                <td>
-                    {{product}}
-                </td>
-                </tr>
-                <tr>
-                <th>
-                    Additional Information:
-                </th>
-                <td>
-                    {{additional}}
-                </td>
-                </tr>
-                    </table>
-
-
-            </div>
-            <div class="infocontainer" >
-              <form id="contact" action="" method="POST">
-                  <h3>Product Scan</h3>
-                    {% csrf_token %}
-                    {{error_msg}}
-                    <table border="1">
-                    {% for field in form.visible_fields %}
-                      <tr>
-                        <th>{{ field.label_tag }}</th>
-                        <td>
-
-                          {{ field }}
-                          {{ field.help_text }}
-                          {{ field.errors }}
-                        </td>
-                      </tr>
-                    {% endfor %}
-                    </table>
-                  <input type="hidden" name="product" value={{product}}>
-                  <input type="hidden" name="foo" value="bar" />
-                  <button type="submit">Request</button>
-              </form>
-            </div>
-        </section>
 
     </div>
-
+    <div class="col-xs-6 col-sm-4">
+    </div>
+    <div class="col-xs-6 col-sm-4" style="text-align: center; margin:50px;">
+        <div style="max-width: 450px; width: 100%; margin: 0 auto; position: relative;background: #FFF; padding: 25px;">
+        <button id = "back" onclick="goBack()" style="cursor: pointer; width: 100%; border: none; background: #4CAF50; color: #FFF; margin: 0 0 5px; padding: 10px; font-size: 15px;">Return</button>
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-4">
+    </div>
     <script src="{% static 'guideview/js/jquery-3.1.1.min.js' %}"></script>
     <script src="{% static 'guideview/js/animationCounter.js' %}"></script>
     <script src="{% static 'guideview/js/bootstrap.min.js' %}"></script>

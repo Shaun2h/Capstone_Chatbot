@@ -18,7 +18,7 @@
     engine.fovMode=engine.FOVMODE_VERTICAL_FIXED;
     //engine.fovMode=engine.FOVMODE_HORIZONTAL_FIXED﻿;
     var scene = new BABYLON.Scene(engine);
-    scene.clearColor = BABYLON.Color3.Black();
+    scene.clearColor = BABYLON.Color3(0.1,0.1,0.1);
     var createScene =function(){
     var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, new BABYLON.Vector3(0,0,0), scene);
     camera.setPosition(new BABYLON.Vector3(0, 3, 10));

@@ -99,7 +99,7 @@ def return_guide(request, item):
     if random.random() < 0.5:
         addy = "Requires Waterproofing"
     else:
-        addy = "-"
+        addy = "No Waterproof"
     context = {"company": requested_instance.company,
                "region": requested_instance.region,
                "city": requested_instance.city_ID,
