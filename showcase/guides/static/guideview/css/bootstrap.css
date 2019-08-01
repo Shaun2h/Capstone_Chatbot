@@ -1222,7 +1222,7 @@ h2,
 .h2,
 h3,
 .h3 {
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 h1 small,
@@ -1976,7 +1976,7 @@ pre code {
     width: 50%;
   }
   .col-md-5 {
-    width: 41.66666667%;
+    width: 10.66666
   }
   .col-md-4 {
     width: 33.33333333%;
@@ -2276,7 +2276,7 @@ caption {
   text-align: left;
 }
 th {
-  text-align: left;
+  text-align: center;
 }
 .table {
   width: 100%;

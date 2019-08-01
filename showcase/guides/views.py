@@ -108,7 +108,8 @@ def return_guide(request, item):
                "per_box": requested_instance.per_box,
                "sealed": requested_instance.sealed,
                "form": Forceprint5,
-               "additional": addy
+               "additional": addy,
+               "additional2": "Box: BIG"
                }
     list_of_views = []
 
