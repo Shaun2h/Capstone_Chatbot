@@ -33,6 +33,7 @@ STATICFILES_DIRS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'search.apps.SearchConfig',
     'models.apps.ModelsConfig',
     'guides.apps.GuidesConfig',
     'picklistdb.apps.PicklistdbConfig',

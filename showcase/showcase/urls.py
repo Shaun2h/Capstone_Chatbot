@@ -22,5 +22,6 @@ urlpatterns = [
     path("", include('guides.urls')),
     path('guides/', include('guides.urls')),
     path("models/", include("models.urls")),
-    path("picklists/", include("picklistdb.urls"))
+    path("picklists/", include("picklistdb.urls")),
+    path("search/", include("search.urls"))
 ]

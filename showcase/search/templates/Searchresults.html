@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" style = "height:100%; width:100%">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Request Form</title>
+    <link rel="stylesheet" href="{% static '/request2.css' %}" type="text/css" media="all">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'responsive.css' %}">
+</head>
+{% csrf_token %}
+
+
+
+<div class="container">
+    <div class="row">
+    <div class = "col-md-8 contact"  style="margin-top:5%; padding:0;  height: 80vh;  background:WhiteSmoke;">
+        <div class = "contact" style="margin:0; padding:0;" >
+        {%for item in results%}
+            <table style="padding:0;">
+                    <tr>
+                        <th colspan="2"><h2 style = "text-align:center">PACKAGE DETAILS</h2></th>
+                    </tr>
+                    <tr>
+                        <th>City:</th>
+                    <td>
+                        {{item.city}}
+                    </td>
+
+                    </tr>
+                    <tr>
+                         <th>Region:</th>
+                    <td>
+                        {{item.region}}
+                    </td>
+                     </tr>
+                    <tr>
+                        <th>Company:</th>
+                    <td>
+                        {{item.company}}
+                    </td>
+                    </tr>
+                    <tr>
+                        <th>Product number:</th>
+                    <td>
+                        {{item.product}}
+                    </td>
+                    </tr>
+                    <tr>
+                    <th>
+                        Additional Information:
+                    </th>
+                    <td style="background: Yellow;">
+                        {{item.additional2}}
+                    </td>
+                    </tr>
+                    <tr>
+                    <th>
+                        Box Type:
+                    </th>
+                    <td style="background: Yellow;">
+                        {{item.additional}}
+                    </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <p style=" text-align:center; font-size: large;">End of Results</p>
+        </div>
+    </div>
+    <div class = "col-md-4">
+      <form class="contact" action="" method="POST">
+          <h3>{{typing}}</h3>
+            {% csrf_token %}
+            {{error_msg}}
+            <table border="1">
+            {% for field in form.visible_fields %}
+              <tr>
+                <th>{{ field.label_tag }}</th>
+                <td>
+
+                  {{ field }}
+                  {{ field.help_text }}
+                  {{ field.errors }}
+                </td>
+              </tr>
+            {% endfor %}
+            </table>
+          <button type="submit">Request</button>
+      </form>
+        </div>
+</div>
+</div>
+</div>
