@@ -66,7 +66,7 @@ def prID(request):
             error = "ERROR"
 
     # returns a simple form allowing manual entry, or scanned entry.
-    context = {"form": PrIdForm, "error_msg": error, "typing": "Information Request"}
+    context = {"form": PrIdForm, "error_msg": error, "typing": "Scan Pick List"}
     return HttpResponse(render(request, "request.html", context=context))
 
 

@@ -12,7 +12,7 @@ CDN_URL = "http://127.0.0.1:8000/picklists/"
 
 def request_print3(request):
     error = ""
-    context = {"form": Forceprint3, "error_msg": error, "typing": "Request Picklist"}
+    context = {"form": Forceprint3, "error_msg": error, "typing": "Print Shipping Labels"}
     if request.method == "POST":
         question = Forceprint3(request.POST)
 
@@ -37,7 +37,7 @@ def request_print3(request):
 
 def request_print5(request):
     error = ""
-    context = {"form": Forceprint5, "error_msg": error, "typing": "Request Picklist"}
+    context = {"form": Forceprint5, "error_msg": error, "typing": "Print Product Labels"}
     if request.method == "POST":
         question = Forceprint5(request.POST)
 
