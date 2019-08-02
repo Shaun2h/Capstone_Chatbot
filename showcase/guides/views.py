@@ -91,7 +91,8 @@ def pr_filter(request, product_ID):
         return return_guide(request, requested_instance[0])
 
     except (KeyError, ObjectDoesNotExist) as ex:
-        return HttpResponse(str(ex))
+        context = {"form": PrIdForm, "error_msg": "Item does not exist", "typing": "Scan Pick List"}
+        return HttpResponse(render(request, "request.html", context=context))
 
 
 def return_guide(request, item):
