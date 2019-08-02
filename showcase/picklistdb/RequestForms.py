@@ -7,7 +7,7 @@ BaseClass = apps.get_model('models', 'BaseClass')   # import the model from anot
 class Forceprint3(forms.Form):
     # this is only used in the demonstration, because we only have one thing to scan,
     # and no local database to reference each of the product ids to.
-    product_ID1 = forms.CharField(label="Product ID 1:", max_length=50, required=True)
+    product_ID1 = forms.CharField(label="Shipping Box Label:", max_length=50, required=True)
 
     def clean_product(self):
         data = self.cleaned_data["product"]

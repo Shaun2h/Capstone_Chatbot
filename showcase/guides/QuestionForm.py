@@ -105,7 +105,7 @@ class PrIdForm(forms.Form):
     # this is only used in the demonstration, because we only have one thing to scan,
     # and no local database to reference each of the product ids to.
 
-    product = forms.CharField(label="Product ID", min_length=1, max_length=200)
+    product = forms.CharField(label="Picklist ID", min_length=1, max_length=200)
 
     def clean_product(self):
         data = self.cleaned_data["product"]
