@@ -9,6 +9,7 @@ from django.db.models import Q
 import random
 # Create your views here.
 CDN_URL = "http://127.0.0.1:8000/models/"
+ProductRequestUrl = "http://127.0.0.1:8000/guides/"
 relevant_keys = ['Amazon', 'Asus', 'Intel']
 
 
@@ -34,7 +35,6 @@ def search_request(request, entered):
     try:
         # target_class = model_classes[company]
         requested_instance = []
-        print(entered)
         if entered["company"] != [""] and entered["product"] != [""] and entered["region"] != [""]:
             requested_instance = BaseClass.objects.filter(
                 Q(company__icontains=entered["company"]) |
@@ -80,11 +80,14 @@ def search_request(request, entered):
 
 def return_results(request, requested_instance):
     resultslist = []
+    current = random.randint(1, 7)
     for item in requested_instance:
         if random.random() < 0.5:
             addy = "Requires Waterproofing"
         else:
             addy = "No Waterproof"
+        selected = "microchip" + str(current % 7)+".jpg"
+        current += 1
         context = {"company": item.company,
                    "region": item.region,
                    "city": item.city_ID,
@@ -93,12 +96,14 @@ def return_results(request, requested_instance):
                    "per_box": item.per_box,
                    "sealed": item.sealed,
                    "additional": addy,
-                   "additional2": "Box: BIG"
+                   "additional2": "Box: BIG",
+                   "selected_picture": selected
                    }
         resultslist.append(context)
 
     # version with sealed.
-    context = {'results': resultslist, "form": SearchForm}
+    context = {'results': resultslist, "form": SearchForm, "typing": "Product Search",
+               "target_url": ProductRequestUrl}
 
     return HttpResponse(render(request, "Searchresults.html", context=context))
 

@@ -12,16 +12,21 @@
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <link rel="stylesheet" href="{% static 'responsive.css' %}">
 </head>
-{% csrf_token %}
-
-
 
 <div class="container">
     <div class="row">
-    <div class = "col-md-8 contact"  style="margin-top:5%; padding:0;  height: 80vh;  background:WhiteSmoke;">
+    <div class = "col-md-8 contact"  style="margin-top:5%; padding:0;  height: 80vh;  background:White;">
         <div class = "contact" style="margin:0; padding:0;" >
-        {%for item in results%}
-            <table style="padding:0;">
+            {%for item in results%}
+            <form method="POST" name="{{item.product}}" action="{{target_url}}"><input type="text" name="product" hidden="True" value="{{item.product}}">
+                {% csrf_token %}
+                <a href="#" onclick="document.{{item.product}}.submit();" style="color:inherit; margin:50px;">
+                        <div class="row search_result">
+            <div class="col-md-4">
+                 <img src="{% static 'Microchip Pictures/'%}{{item.selected_picture}}" alt={{item.product}} style="height:100%; width:100%;">
+            </div>
+            <div class="col-md-8 " style="height:100%;">
+            <table style="padding:0; width:100%; " >
                     <tr>
                         <th colspan="2"><h2 style = "text-align:center">PACKAGE DETAILS</h2></th>
                     </tr>
@@ -66,12 +71,20 @@
                         {{item.additional}}
                     </td>
                     </tr>
+                </table>
+                <div style="height:1px; background:black;"></div>
+                </div>
+            </div>
+                </a>
+            </form>
                 {% endfor %}
-            </table>
-            <p style=" text-align:center; font-size: large;">End of Results</p>
+
+            <p style=" text-align:center; font-size: large; padding:30px;">End of Results</p>
+
         </div>
     </div>
     <div class = "col-md-4">
+         <img src="{% static '/Infineon.jpg' %}" alt="Infineon logo" width="100%">
       <form class="contact" action="" method="POST">
           <h3>{{typing}}</h3>
             {% csrf_token %}
@@ -92,6 +105,5 @@
           <button type="submit">Request</button>
       </form>
         </div>
-</div>
 </div>
 </div>

@@ -10,7 +10,7 @@ BaseClass = apps.get_model('models', 'BaseClass')  # import the model from anoth
 class SearchForm(forms.Form):
     company = forms.CharField(label="Company", min_length=1, max_length=200, required=False)
     region = forms.CharField(label="Region",
-                             widget=forms.Select(choices=(("",""),("NA", "NA"), ("SEA", "SEA"),
+                             widget=forms.Select(choices=(("", ""), ("NA", "NA"), ("SEA", "SEA"),
                                                           ("EUR", "EUR"), ("ASIA", "ASIA"),
                                                           ("CHINA", "CHINA"))),
                              required=False
