@@ -1,0 +1,20 @@
+{
+  "parsers_metadata": [
+    {
+      "entity_identifier": "Company",
+      "entity_parser": "parser_1"
+    },
+    {
+      "entity_identifier": "Mixed_Number",
+      "entity_parser": "parser_2"
+    },
+    {
+      "entity_identifier": "Number",
+      "entity_parser": "parser_3"
+    },
+    {
+      "entity_identifier": "Region",
+      "entity_parser": "parser_4"
+    }
+  ]
+}
