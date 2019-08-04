@@ -35,35 +35,44 @@ def search_request(request, entered):
     try:
         # target_class = model_classes[company]
         requested_instance = []
-        if entered["company"] != [""] and entered["product"] != [""] and entered["region"] != [""]:
+        print(entered)
+        if entered["company"] != "" and entered["product"] != "" and entered["region"] != "":
+            print(1)
             requested_instance = BaseClass.objects.filter(
                 Q(company__icontains=entered["company"]) |
                 Q(product_ID__icontains=entered["product"]) |
                 Q(region__icontains=entered["region"]))
-        elif entered["company"] != [""] and entered["product"] != [""]:
+        elif entered["company"] != "" and entered["product"] != "":
+            print(2)
             requested_instance = BaseClass.objects.filter(
                 Q(company__icontains=entered["company"]) |
                 Q(product_ID__icontains=entered["product"]))
 
-        elif entered["company"] != [""] and entered["region"] != [""]:
+        elif entered["company"] != "" and entered["region"] != "":
+            print(3)
             requested_instance = BaseClass.objects.filter(
                 Q(company__icontains=entered["company"]) |
                 Q(region__icontains=entered["region"]))
 
-        elif entered["product"] != [""] and entered["region"] != [""]:
+        elif entered["product"] != "" and entered["region"] != "":
+            print(4)
             requested_instance = BaseClass.objects.filter(
                 Q(product_ID__icontains=entered["product"]) |
                 Q(region__icontains=entered["region"]))
 
-        elif entered["product"] != [""]:
+        elif entered["product"] != "":
+            print(5)
+            print("doing a thing")
+            requested_instance = BaseClass.objects.filter(
+                Q(region__icontains=entered["product"]))
+
+        elif entered["region"] != "":
+            print(6)
             requested_instance = BaseClass.objects.filter(
                 Q(region__icontains=entered["region"]))
 
-        elif entered["region"] != [""]:
-            requested_instance = BaseClass.objects.filter(
-                Q(region__icontains=entered["region"]))
-
-        elif entered["company"] != [""] and entered["region"] != [""]:
+        elif entered["company"] != "" and entered["region"] != "":
+            print(7)
             requested_instance = BaseClass.objects.filter(
                 Q(company__icontains=entered["company"]))
 

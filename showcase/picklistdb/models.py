@@ -20,7 +20,7 @@ class Picklist(models.Model):
 
     def req_list(self):
         attributes = [a for a in dir(Picklist) if not a.startswith('__')
-                      and a.startswith("product_") ]
+                      and a.startswith("product_")]
         return_list = []
         for item in attributes:
             if len(item) > 0:
