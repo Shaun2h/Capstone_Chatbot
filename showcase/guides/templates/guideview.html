@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height:100%;">
 {% load static %}
 
 <head>
@@ -22,16 +22,27 @@ function goBack() {
 </script>
 </head>
 
-<body style="background-color:white; overflow-x:hidden; background-size:cover">
+<body style="height:100%; background-color:white; overflow-x:hidden; background-size:cover">
     <div class="wrapper">
         <header class="header">
             <section class="header-bottom">
-                <div class="container">
+                <div class="container" style="width:100%;">
                     <div class="row">
-                        <div class="col-md-5 col-sm-12 col-xs-12" style="padding:0px;">
-                                <div class="main-logo">
-                                    <img src="{% static 'guideview/img/infineonlogo.png' %}" style="height:100%; width:10%;" alt="">
-                                </div>
+                        <div class="col-md-2">
+                                <img src="{% static 'guideview/img/infineonlogo.png' %}" style="width:40%; padding:5%; overflow:hidden;" alt="">
+                        </div>
+                        <div class="col-md-8">
+                            <ul class="topbar_nav" style="list-style:none; margin:0; width:100%; height:100%; display:flex;">
+                                <li class="col-md-2 topbar_elem"></li>
+                                <li class="col-md-2 topbar_elem"><table style="height:100%; vertical-align:center"><tr><th><div style="height:80%;"><a class="inner_link" href="/guides/">Picklist Scanning</a></div></th></tr></table></li>
+                                <li class="col-md-2 topbar_elem"><table style="height:100%; vertical-align:center"><tr><th><div style="height:80%;"><a class="inner_link" href="/picklists/">Print Shipping Labels</a></div></th></tr></table></li>
+                                <li class="col-md-2 topbar_elem"><table style="height:100%; vertical-align:center"><tr><th><div style="height:80%;"><a class="inner_link" href="/search/">Search</a></div></th></tr></table></li>
+                                <li class="col-md-2 topbar_elem"></li>
+                                <li class="col-md-2 topbar_elem"></li>
+
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
                         </div>
                     </div>
                 </div>
@@ -49,9 +60,8 @@ function goBack() {
                      </div>
                 </div>
                 <div class = "col-xs-6" >
-
-                <p style="text-align:center;">
-                    <table border="1" id="contact" style="text-align:center">
+                    <div style= "padding:2rem;">
+                    <table border="1" id="contact" style="text-align:center; ">
                           <tr>
                             <th colspan="2"><h2 style = "text-align:center">PACKAGE DETAILS</h2></th>
                           </tr>
@@ -97,6 +107,7 @@ function goBack() {
                     </td>
                     </tr>
                         </table>
+                    </div>
 
                   <form id="contact" action="" method="POST">
                       <h3>Scan Products</h3>

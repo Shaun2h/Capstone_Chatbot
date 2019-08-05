@@ -5,8 +5,28 @@
     <meta charset="UTF-8">
     <title>Request Form</title>
     <link rel="stylesheet" href="{% static '/request3.css' %}" type="text/css" media="all">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 </head>
+<body style="height:100%;">
 {% csrf_token %}
+<div  class="topbar" style="height:10%">
+    <div class="col-md-2">
+            <img src="{% static 'guideview/img/infineonlogo.png' %}" style="width:40%; padding:5%; overflow:hidden;" alt="">
+    </div>
+    <div class="col-md-8">
+        <ul class="topbar_nav" style="margin:0; width:100%; height:100%; display:flex;">
+            <li class="col-md-2 topbar_elem"></li>
+            <li class="col-md-2 topbar_elem"><table style="height:100%; vertical-align:center"><tr><th><div style="height:80%;"><a class="inner_link" href="/guides/">Picklist Scanning</a></div></th></tr></table></li>
+            <li class="col-md-2 topbar_elem"><table style="height:100%; vertical-align:center"><tr><th><div style="height:80%;"><a class="inner_link" href="/picklists/">Print Shipping Labels</a></div></th></tr></table></li>
+            <li class="col-md-2 topbar_elem"><table style="height:100%; vertical-align:center"><tr><th><div style="height:80%;"><a class="inner_link" href="/search/">Search</a></div></th></tr></table></li>
+            <li class="col-md-2 topbar_elem"></li>
+            <li class="col-md-2 topbar_elem"></li>
+
+        </ul>
+    </div>
+    <div class="col-md-2">
+    </div>
+</div>
 <div class="container">
   <form id="contact" action="" method="POST">
       <h3>{{typing}}</h3>
@@ -17,7 +37,6 @@
           <tr>
             <th>{{ field.label_tag }}</th>
             <td>
-
               {{ field }}
               {{ field.help_text }}
               {{ field.errors }}
@@ -28,3 +47,4 @@
       <button type="submit" id="submitbutton">Request</button>
   </form>
 </div>
+</body>

@@ -27,7 +27,7 @@ def landing(request):
             error = "Invalid data entered"
 
     # returns a simple form allowing manual entry, or scanned entry.
-    context = {"form": SearchForm, "error_msg": error, "typing": "Scan Pick List"}
+    context = {"form": SearchForm, "error_msg": error, "typing": "Search Request"}
     return HttpResponse(render(request, "request.html", context=context))
 
 
