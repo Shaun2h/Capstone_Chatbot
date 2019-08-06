@@ -45,7 +45,8 @@ def prID(request):
             # it is from the form within the same page.
             relevant_list = []
             for idx in range(1, 6):
-                relevant_list.append(request.POST["product_ID"+str(idx)][0])
+                relevant_list.append(request.POST["product_ID"+str(idx)])
+                print(request.POST["product_ID" + str(idx)])
 
             thread = Thread(target=print_barcodes, kwargs=dict(list_of_ids=relevant_list,
                                                                new_cwd=os.getcwd()))
