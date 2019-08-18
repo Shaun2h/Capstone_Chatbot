@@ -30,8 +30,6 @@ python manage.py runserver
 ```
 'http:127.0.0.1:8000' or 'http:/localhost:8000/'<br>
 Admin is currently enabled on the server.<br>
-http:127.0.0.1:8000/` brings you to the various templates available.<br>
-http:127.0.0.1:8000/models` brings you to the models pages. These  are loaded from iframes in the actual pages to allow a visible model.<br>
 For simplicity, Admin username is admin, password is adminpassword. This needs to be changed based off documentation.
 
 Further Documentation can be granted upon request.
