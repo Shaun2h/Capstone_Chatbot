@@ -3,6 +3,9 @@ from django.contrib import admin
 
 
 class Picklist(models.Model):
+    """
+    Model to store picklist product ids and relevant fields such as ids
+    """
     own_id = models.CharField(max_length=50, default="")
     product_ID1 = models.CharField(max_length=50, default="", blank=False)
     product_ID2 = models.CharField(max_length=50, default="", blank=True)
@@ -24,9 +27,9 @@ class Picklist(models.Model):
         return_list = []
         for item in attributes:
             if len(item) > 0:
-                print(item)
-                return_list.append(getattr(self, item)) # access the relevant attributes.
-        print(return_list)
+                # print(item)
+                return_list.append(getattr(self, item))  # access the relevant attributes.
+        # print(return_list)
         return return_list
 
 

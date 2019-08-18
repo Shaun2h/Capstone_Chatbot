@@ -13,31 +13,14 @@ import random
 CDN_URL = "http://127.0.0.1:8000/models/"
 relevant_keys = ['Amazon', 'Asus', 'Intel']
 
-"""
-def basic(request):
-    error = ""
-    if request.method == "POST":
-        question = QuestionForm(request.POST)
-
-        if question.is_valid():
-            data = question.cleaned_data
-            return asked(request, data["company"], data["region"], data["city"], data["product"])
-            # exits here, returning a http response
-        else:
-            error = "ERROR"
-
-    # returns a simple form allowing manual entry, or scanned entry.
-    context = {"form": QuestionForm, "error_msg": error}
-    return HttpResponse(render(request, "request.html", context=context))
-
-    # return a http response, set to 405.
-    # out = HttpResponse(error)
-    # out.status_code = 405
-    # return out
-"""
-
 
 def prID(request):
+    """
+    Wrapper method around pr_filter, and also prints the scanned IDs.
+
+    :param request: HTTP request that wasa sent in
+    :return: HTTP Response, depending on outcome of operation
+    """
     error = ""
     if request.method == "POST":
         question = PrIdForm(request.POST)
@@ -72,6 +55,14 @@ def prID(request):
 
 
 def pr_filter(request, product_ID):
+    """
+    Filters for a specific item in the database based off product IDs. Returns a guide if appropriate
+    or the original form if the item was not found
+
+    :param request: HTTP Request that was passed in.
+    :param product_ID: string product ID
+    :return: HTTPResponse, template and values depend on outcome of search.
+    """
     try:
         # target_class = model_classes[company]
         requested_instance = BaseClass.objects.filter(product_ID=product_ID)
@@ -97,6 +88,12 @@ def pr_filter(request, product_ID):
 
 
 def return_guide(request, item):
+    """
+    Returns a html page with the guide for packing the product
+    :param request: Request that was passed in.
+    :param item: The instance of the object in the database that was filtered
+    :return: HTTPResponse with template "guideview.html"
+    """
     requested_instance = item  # it's essentially a list object here.
     if random.random() < 0.5:
         addy = "Requires Waterproofing"
@@ -130,22 +127,18 @@ def return_guide(request, item):
     return HttpResponse(render(request, "guideview.html", context=context))
 
 
-""" # another method for handling the responses. Since one method alone is anough...
-def guide_response(request):  # main method to handle the incoming request. If correct
-    error = "Make Req."
-    if request.method == "POST":
-        question = QuestionForm(request.POST)
-        if question.is_valid():
-            data = question.cleaned_data
-            return asked(request, data["company"], data["region"], data["city"], data["product"])
-        else:
-            error = "ERROR"
-    context = {"form": QuestionForm, "error_msg": error}
-    return HttpResponse(render(request, "form.html", context=context))
-"""
-
-
 def asked(request, company, region, city, product):
+    """
+    DEPRECATED.
+
+    :param request: original http request
+    :param company: string Company of product
+    :param region: string Region for which product is bound
+    :param city: string  City for which product is bound
+    :param product: string  Product ID number
+    :return: returns a guide from the guides class if a valid object is found. If not, return a
+    Http response with exception.
+    """
     try:
         requested_instance = BaseClass.objects.filter(company=company,
                                                       region=region, city_ID=city,
@@ -171,6 +164,16 @@ def asked(request, company, region, city, product):
 
 
 def insert_req(request):
+    """
+    GET or POST requests that are sent to the server are received in this method.
+
+    This method is for requesting an insertion of an item from the database
+    If the method is a POST request, it is forwarded to the method insert_succ.
+    If not, a basic http response with the request form is sent
+
+    :param request: Accepts the HTTP Request sent in.
+    :return: If method is not POST, returns a HTTPResponse with the request form.
+    """
     error = ""
     if request.method == "POST":
         insertreq = InsertForm(request.POST)
@@ -188,6 +191,23 @@ def insert_req(request):
 
 
 def insert_succ(company, region, city, product, url, ispizza, per_box, seal):
+    """
+    Creates a new instance of a product and saves it in the database. Raises an error upon failure
+
+    This method will also check for duplicates of the same item, ensuring no two same products are
+    added. The check requirements can be configured by changing the filter below.
+
+    :param company: string Company of product
+    :param region: string Region for which product is bound
+    :param city: string  City for which product is bound
+    :param product: string  Product ID number
+    :param url: string File name for 3D model file. Field is generally unused and can be left as empty strings
+    :param ispizza: Boolean for whether item fits into a pizza box
+    :param per_box: Integer for number of products per box
+    :param seal: Boolean for whether the product is sealed
+    :return: HTTP Response with an explanation. Unformatted.
+    """
+
     try:
         main_classes = BaseClass.objects.filter(region=region, city_ID=city, product_ID=product)
         if len(main_classes) > 0:  # is a duplicate in the area?
@@ -205,6 +225,16 @@ def insert_succ(company, region, city, product, url, ispizza, per_box, seal):
 
 
 def del_req(request):
+    """
+    GET or POST requests that are sent to the server are received in this method.
+
+    This method is for requesting a deletion of an item from the database
+    If the method is a POST request, it is forwarded to the method del_succ.
+    If not, a basic http response with the request form is sent
+
+    :param request: Accepts the HTTP Request sent in.
+    :return: If method is not POST, returns a HTTPResponse with the request form.
+    """
     error = ""
     if request.method == "POST":
         insertreq = QuestionForm(request.POST)
@@ -223,6 +253,16 @@ def del_req(request):
 
 
 def del_succ(region, city, product, ispizza, perbox):
+    """
+    Deletes an entry from the database.
+
+    :param region: string  Region for which product is bound
+    :param city:  string City for which product is bound
+    :param product: string
+    :param ispizza: Boolean
+    :param perbox: Integer
+    :return: HttpResponse, unformatted string of operation result. Exceptions are provided on failure
+    """
     # optionally add company to arguments.
 
     try:

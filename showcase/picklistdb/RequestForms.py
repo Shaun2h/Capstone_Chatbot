@@ -5,6 +5,9 @@ BaseClass = apps.get_model('models', 'BaseClass')   # import the model from anot
 
 
 class Forceprint3(forms.Form):
+    """
+    Form for page where 1 item needs to be printed 3 times. For demonstration purposes.
+    """
     # this is only used in the demonstration, because we only have one thing to scan,
     # and no local database to reference each of the product ids to.
     product_ID1 = forms.CharField(label="Shipping Box Label:", max_length=50, required=True)
@@ -17,6 +20,9 @@ class Forceprint3(forms.Form):
 
 
 class Forceprint5(forms.Form):
+    """
+    Form for page where 5 items are to be printed
+    """
     # this is only used in the demonstration, because we only have one thing to scan,
     # and no local database to reference each of the product ids to.
     product_ID1 = forms.CharField(label="Product ID 1:", max_length=50, required=True,
@@ -36,7 +42,9 @@ class Forceprint5(forms.Form):
 class PicklistIdForm(forms.Form):
     # this is only used in the demonstration, because we only have one thing to scan,
     # and no local database to reference each of the product ids to.
-
+    """
+    Form for page where we want to insert data into the database
+    """
     product = forms.CharField(label="Picklist ID", min_length=1, max_length=50)
     product_ID1 = forms.CharField(label="Product ID 1:", max_length=50, required=False)
     product_ID2 = forms.CharField(label="Product ID 2:", max_length=50, required=False)
@@ -57,6 +65,10 @@ class PicklistIdForm(forms.Form):
 
 
 class RequestPicklistID(forms.Form):
+    """
+    Form where we request a specific picklist, either to delete it (del_req/del_succ) or to
+    return a guide.
+    """
     # this is only used in the demonstration, because we only have one thing to scan,
     # and no local database to reference each of the product ids to.
 

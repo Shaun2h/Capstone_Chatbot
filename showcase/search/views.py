@@ -14,6 +14,16 @@ relevant_keys = ['Amazon', 'Asus', 'Intel']
 
 
 def landing(request):
+    """
+    Method to handle search requests.
+
+     If a GET request is received, returns a page with a form
+    to fill for searches. If a POST request is filled, calls search_request to find the relevant
+    items
+
+    :param request: HTTP request item
+    :return: HTTPResponse
+    """
     error = ""
     if request.method == "POST":
         question = SearchForm(request.POST)
@@ -32,6 +42,14 @@ def landing(request):
 
 
 def search_request(request, entered):
+    """
+    Searches for matching items in the database based off criterion in the dictionary. If successful,
+    calls search_results() method.
+
+    :param request:  Request from client
+    :param entered: Dictionary containing relevant entries
+    :return: HTTPResponse with rendered page of search results
+    """
     try:
         # target_class = model_classes[company]
         requested_instance = []
@@ -64,7 +82,7 @@ def search_request(request, entered):
             print(5)
             print("doing a thing")
             requested_instance = BaseClass.objects.filter(
-                Q(region__icontains=entered["product"]))
+                Q(product_ID__icontains=entered["product"]))
 
         elif entered["region"] != "":
             print(6)
@@ -88,6 +106,12 @@ def search_request(request, entered):
 
 
 def return_results(request, requested_instance):
+    """
+    
+    :param request:
+    :param requested_instance:
+    :return:
+    """
     resultslist = []
     current = random.randint(1, 7)
     for item in requested_instance:

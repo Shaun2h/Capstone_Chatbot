@@ -11,6 +11,16 @@ CDN_URL = "http://127.0.0.1:8000/picklists/"
 
 
 def request_print3(request):
+    """
+    Method that accepts either post or get requests.
+
+    If GET, returns a HTTP page with the relevant forms for the user to fill in
+    If POST, prints the items by calling print_request_int()
+    Prints 3 labels
+
+    :param request: Request that was sent in
+    :return: Returns httpResponse with the same form
+    """
     error = ""
     context = {"form": Forceprint3, "error_msg": error, "typing": "Print Shipping Labels"}
     if request.method == "POST":
@@ -36,6 +46,15 @@ def request_print3(request):
 
 
 def request_print5(request):
+    """
+        Method that accepts either post or get requests.
+
+        If GET, returns a HTTP page with the relevant forms for the user to fill in
+        If POST, prints the items by calling print_request_int()
+        Prints 5 labels.
+        :param request: Request that was sent in
+        :return: Returns httpResponse with the same form
+        """
     error = ""
     context = {"form": Forceprint5, "error_msg": error, "typing": "Print Product Labels"}
     if request.method == "POST":
@@ -76,6 +95,15 @@ def print_request_int(request, data):
 
 
 def request_pick(request):
+    """
+    DEACTIVATED
+    Wrapper method about pick_response.
+
+    If received a GET request, returns a page with the relevant form to fill up.
+    If received a POST request, returns a page based of Guide
+    :param request:
+    :return:
+    """
     error = ""
     if request.method == "POST":
         question = RequestPicklistID(request.POST)
@@ -93,6 +121,13 @@ def request_pick(request):
 
 
 def pick_response(request, picklistid):
+    """
+    DEACTIVATED
+
+    :param request: request item
+    :param picklistid: string picklist ID
+    :return:
+    """
     try:
         main_classes = Picklist.objects.filter(own_id=picklistid)
         count = main_classes.count()
@@ -110,13 +145,23 @@ def pick_response(request, picklistid):
         # print the output.
         thread.start()
 
-        return HttpResponse(render(request, "request.html", context=context))
+        return HttpResponse(render(request, "guideview.html", context=context))
 
     except (KeyError, ObjectDoesNotExist) as ex:
         return HttpResponse(str(ex))
 
 
 def insert_req(request):
+    """
+    DEACTIVATED
+    Method that handles inserting items into the Picklist database. Wraps insert_succ.
+
+    If request method was a POST, insert_succ is called with the data from the request
+    If request method was a GET, returns a form that can accept data.
+
+    :param request:
+    :return:
+    """
     error = ""
     if request.method == "POST":
         insertreq = PicklistIdForm(request.POST)
@@ -133,6 +178,14 @@ def insert_req(request):
 
 
 def insert_succ(data):
+    """
+    DEACTIVATED
+
+    Method to insert picklist data into the database
+
+    :param data: data with the relevant fields for picklist insertion.
+    :return: HTTP Response, plain string on success or failure. If failure, exception is included.
+    """
     try:
         input_id = data["product"]
         product_ID1 = data["product_ID1"]
@@ -163,6 +216,15 @@ def insert_succ(data):
 
 
 def del_req(request):
+    """
+    DEACTIVATED
+
+    Method to request deletion of data from the database
+
+    :param request: Request from the client
+    :return: HttpResponse with form if GET request was obtained, or calls del_succ if a post request
+    was obtained
+    """
     error = ""
     if request.method == "POST":
         insertreq = RequestPicklistID(request.POST)
@@ -180,6 +242,14 @@ def del_req(request):
 
 
 def del_succ(data):
+    """
+    DEACTIVATED
+
+    Method to delete picklist data from the database
+
+    :param data: data with the relevant fields for picklist filtering for deletion.
+    :return: HTTP Response, plain string on success or failure. If failure, exception is included.
+    """
     # optionally add company to arguments.
 
     try:

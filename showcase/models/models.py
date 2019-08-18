@@ -5,6 +5,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class BaseClass(models.Model):
+    """
+    Stores the entry for a product. Fields are limited as stated below.
+    """
     # City ID records which city is it.. based off the choice above.
     company = models.CharField(max_length=50, choices=(("Amazon", "Amazon"),
                                                        ("Intel", "Intel"),
